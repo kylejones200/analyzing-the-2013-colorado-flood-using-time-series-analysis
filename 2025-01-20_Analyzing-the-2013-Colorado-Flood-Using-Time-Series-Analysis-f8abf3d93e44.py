@@ -124,7 +124,7 @@ def resample_weekly(df):
 def save_plot(fig, filename, dpi=300):
     """Save plot to file"""
     if not os.path.exists('plots'):
-        os.makedirs('plots')
+        os.makedirs('plots', exist_ok=True)
     fig.savefig(os.path.join('plots', filename), 
                 bbox_inches='tight', 
                 dpi=dpi)
