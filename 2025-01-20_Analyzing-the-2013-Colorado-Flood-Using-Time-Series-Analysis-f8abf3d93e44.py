@@ -16,7 +16,6 @@ import numpy as np
 import os
 import pandas as pd
 import seaborn as sns
-import warnings
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(
@@ -30,7 +29,6 @@ logging.basicConfig(
 # Last Updated: April 2024
 # Description: Time Series Analysis of 2013 Colorado Flood
 
-warnings.filterwarnings('ignore')
 
 # Handle date time conversions
 register_matplotlib_converters()
