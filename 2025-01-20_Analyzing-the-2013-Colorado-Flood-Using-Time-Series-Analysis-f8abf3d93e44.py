@@ -3,14 +3,11 @@
 
 
 from data_io import read_csv
-from datetime import datetime, timedelta
-from matplotlib.dates import DateFormatter
 from pandas.plotting import register_matplotlib_converters
 from sklearn.metrics import mean_squared_error
 from statsmodels.tsa.statespace.sarimax import SARIMAX
 import earthpy as et
 import logging
-import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
 import numpy as np
 import os
