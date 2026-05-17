@@ -1,0 +1,25 @@
+[project]
+name = "analyzing-the-2013-colorado-flood-using-time-series-analysis"
+version = "0.1.0"
+description = "Companion code for Medium article: analyzing the 2013 colorado flood using time series analysis"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "earthpy>=0.9.4",
+    "matplotlib>=3.10.9",
+    "numpy>=2.4.4",
+    "pandas>=2.3.3",
+    "scikit-learn>=1.8.0",
+    "seaborn>=0.13.2",
+    "statsmodels>=0.14.6",
+]
+
+[tool.uv]
+package = false
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]
