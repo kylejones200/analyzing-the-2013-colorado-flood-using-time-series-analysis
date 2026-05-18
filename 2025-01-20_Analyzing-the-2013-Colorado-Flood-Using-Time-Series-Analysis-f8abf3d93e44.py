@@ -1,6 +1,5 @@
 # Description: Short example for Analyzing the 2013 Colorado Flood Using Time Series Analysis.
 
-
 import logging
 import os
 
@@ -20,12 +19,10 @@ logging.basicConfig(
     format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
 )
 
-
 # Earth Data Science Tutorial Blog
 # Initial Author: Univ of Colorado Earth Lab; updated by Kyle Jones
 # Last Updated: April 2024
 # Description: Time Series Analysis of 2013 Colorado Flood
-
 
 # Handle date time conversions
 register_matplotlib_converters()
@@ -41,9 +38,7 @@ os.chdir(os.path.join(et.io.HOME, "earth-analytics", "data"))
 stream_discharge_path = os.path.join(
     "colorado-flood", "discharge", "06730200-discharge-daily-1986-2013.csv"
 )
-precip_path = os.path.join(
-    "colorado-flood", "precipitation", "805325-precip-daily-2003-2013.csv"
-)
+precip_path = os.path.join("colorado-flood", "precipitation", "805325-precip-daily-2003-2013.csv")
 
 
 # Data processing functions
@@ -80,9 +75,7 @@ def plot_discharge_and_precip(discharge_df, precip_df, start_date, end_date):
     """Plot combined discharge and precipitation"""
     discharge_subset = subset_time_period(discharge_df, start_date, end_date)
     precip_subset = subset_time_period(precip_df, start_date, end_date)
-
     fig, ax1 = plt.subplots(figsize=(15, 7))
-
     # Discharge on primary y-axis
     color = "tab:blue"
     ax1.set_xlabel("Date")
@@ -95,7 +88,6 @@ def plot_discharge_and_precip(discharge_df, precip_df, start_date, end_date):
     )
     ax1.tick_params(axis="y", labelcolor=color)
     ax1.set_ylim(bottom=0)
-
     # Precipitation on secondary y-axis
     ax2 = ax1.twinx()
     color = "tab:red"
@@ -109,16 +101,13 @@ def plot_discharge_and_precip(discharge_df, precip_df, start_date, end_date):
     )
     ax2.tick_params(axis="y", labelcolor=color)
     ax2.set_ylim(bottom=0)
-
     # Title and layout
     plt.title("Stream Discharge and Precipitation During 2013 Colorado Flood")
     plt.xticks(rotation=45)
-
     # Combine legends
     lines1, labels1 = ax1.get_legend_handles_labels()
     lines2, labels2 = ax2.get_legend_handles_labels()
     ax2.legend(lines1 + lines2, labels1 + labels2, loc="upper right")
-
     return fig, (ax1, ax2)
 
 
@@ -144,7 +133,6 @@ def analyze_flood_metrics(discharge_df, precip_df, flood_start, flood_end):
     """Calculate key flood metrics"""
     flood_discharge = subset_time_period(discharge_df, flood_start, flood_end)
     flood_precip = subset_time_period(precip_df, flood_start, flood_end)
-
     metrics = {
         "total_precip": flood_precip["HPCP"].sum(),
         "max_discharge": flood_discharge["disValue"].max(),
@@ -152,23 +140,17 @@ def analyze_flood_metrics(discharge_df, precip_df, flood_start, flood_end):
         "max_precip_day": flood_precip["HPCP"].idxmax(),
         "max_discharge_day": flood_discharge["disValue"].idxmax(),
     }
-
     return metrics
 
 
-def fit_sarima_model(
-    data, train_size=0.8, order=(1, 1, 1), seasonal_order=(1, 1, 1, 12)
-):
+def fit_sarima_model(data, train_size=0.8, order=(1, 1, 1), seasonal_order=(1, 1, 1, 12)):
     """Fit SARIMA model and make predictions"""
     train_size = int(len(data) * train_size)
     train = data[:train_size]
     test = data[train_size:]
-
     model = SARIMAX(train["disValue"], order=order, seasonal_order=seasonal_order)
     results = model.fit()
-
     predictions = results.predict(start=len(train), end=len(train) + len(test) - 1)
-
     return train, test, predictions, results
 
 
@@ -177,11 +159,9 @@ def plot_sarima_results(
 ):
     """Plot SARIMA results with confidence intervals"""
     fig, ax = plt.subplots(figsize=(15, 7))
-
     ax.plot(train.index, train["disValue"], label="Training Data", color="blue")
     ax.plot(test.index, test["disValue"], label="Actual Test Data", color="green")
     ax.plot(test.index, predictions, label="SARIMA Forecast", color="red")
-
     if confidence_intervals is not None:
         lower_ci = np.maximum(confidence_intervals["lower"], 0)
         ax.fill_between(
@@ -199,7 +179,6 @@ def plot_sarima_results(
     ax.set_ylim(bottom=0)
     plt.xticks(rotation=45)
     plt.legend()
-
     return fig, ax
 
 
@@ -208,43 +187,32 @@ if __name__ == "__main__":
     logger.info("Loading and processing data...")
     discharge_df = process_discharge_data(stream_discharge_path)
     precip_df = process_precip_data(precip_path)
-
     # Analyze flood period
-    flood_metrics = analyze_flood_metrics(
-        discharge_df, precip_df, "2013-09-01", "2013-09-30"
-    )
+    flood_metrics = analyze_flood_metrics(discharge_df, precip_df, "2013-09-01", "2013-09-30")
     logger.info("\nFlood Metrics:")
     for key, value in flood_metrics.items():
         logger.info(f"{key}: {value}")
 
     # Create all plots
     logger.info("\nGenerating plots...")
-
     # Basic discharge plot
     fig1, ax1 = plot_discharge(discharge_df)
     save_plot(fig1, "full_timeseries.png")
-
     # Flood period combined plot
-    fig2, axes2 = plot_discharge_and_precip(
-        discharge_df, precip_df, "2013-09-01", "2013-09-30"
-    )
+    fig2, axes2 = plot_discharge_and_precip(discharge_df, precip_df, "2013-09-01", "2013-09-30")
     save_plot(fig2, "flood_period_combined.png")
-
     # SARIMA modeling
     logger.info("\nFitting SARIMA model...")
     train, test, predictions, model_results = fit_sarima_model(
         discharge_df, train_size=0.8, order=(2, 1, 2), seasonal_order=(1, 1, 1, 12)
     )
-
     # Get forecast confidence intervals
     forecast = model_results.get_forecast(len(test))
     conf_int = forecast.conf_int()
     confidence_intervals = {"lower": conf_int.iloc[:, 0], "upper": conf_int.iloc[:, 1]}
-
     # Calculate and print RMSE
     rmse = np.sqrt(mean_squared_error(test["disValue"], predictions))
     logger.info(f"RMSE: {rmse:.2f}")
-
     # Plot SARIMA results
     fig3, ax3 = plot_sarima_results(
         train,
@@ -254,5 +222,4 @@ if __name__ == "__main__":
         "SARIMA Forecast vs Actual Discharge",
     )
     save_plot(fig3, "sarima_forecast.png")
-
     plt.show()
