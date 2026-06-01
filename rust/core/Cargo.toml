@@ -1,0 +1,9 @@
+[package]
+name = "analyzing_the_2013_colorado_flood_using_time_series_analysis_core"
+description = "Block maximum aggregation (weekly max)"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[lib]
+path = "src/lib.rs"

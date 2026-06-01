@@ -1,0 +1,15 @@
+[package]
+name = "analyzing_the_2013_colorado_flood_using_time_series_analysis_rs"
+description = "Python bindings (PyO3) for analyzing_the_2013_colorado_flood_using_time_series_analysis_core"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[lib]
+name = "analyzing_the_2013_colorado_flood_using_time_series_analysis_rs"
+crate-type = ["cdylib"]
+
+[dependencies]
+analyzing_the_2013_colorado_flood_using_time_series_analysis_core = { path = "../core" }
+pyo3 = { version = "0.28", features = ["extension-module"] }
+numpy = "0.28"

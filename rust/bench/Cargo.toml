@@ -1,0 +1,13 @@
+[package]
+name = "analyzing_the_2013_colorado_flood_using_time_series_analysis_bench"
+description = "Standalone Rust benchmark (no Python)"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[[bin]]
+name = "bench"
+path = "src/main.rs"
+
+[dependencies]
+analyzing_the_2013_colorado_flood_using_time_series_analysis_core = { path = "../core" }

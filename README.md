@@ -11,14 +11,7 @@ This analysis builds upon the foundational work of the University of Colorado's 
 
 Stream discharge measurements provide critical insights into flood events. By analyzing historical discharge data and developing predictive models, we can better understand flood patterns and improve early warning systems.
 
-## About
 
-Place the code for this article in this repository.
-The original article export is saved as `article.md`.
-
-## Files
-
-Add your `.ipynb`, `.py`, `.yaml`, `.js`, `.ts`, or other project files here.
 
 ## Disclaimer
 
